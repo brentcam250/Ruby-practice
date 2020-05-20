@@ -29,4 +29,9 @@ def caesar_cipher(input, shift)
 
 end
 
-puts caesar_cipher('What a string!', 5)
+puts "enter a phrase!"
+to_encode = gets.chomp
+puts "whats your encryption key?"
+shift = gets.chomp.to_i
+
+puts caesar_cipher(to_encode, shift)
