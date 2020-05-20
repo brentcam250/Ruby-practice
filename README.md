@@ -1,0 +1,1 @@
+Working through the https://www.theodinproject.com/tracks/full-stack-ruby-on-rails, specifically the Ruby Programming section.
