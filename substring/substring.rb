@@ -21,7 +21,7 @@ end
 
 
 dictionary = ["below","down","go","going","horn","how","howdy","it","i","low","own","part","partner","sit"]
+test_string = "Howdy partner, sit Down! Hows it going?"
 
-
-result = substring("Howdy partner, sit Down! Hows it going?", dictionary)
+result = substring(test_string, dictionary)
 puts result
