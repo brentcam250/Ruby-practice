@@ -1,5 +1,5 @@
 class TicTacToe 
-  @WIN_COMBOS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,6],[6,4,2]]
+  @@WIN_COMBOS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,6],[6,4,2]]
    
   def initialize
     # initialize by making 9 cells,
@@ -30,7 +30,13 @@ class TicTacToe
 
   def win? 
     #this method to determine if a win has occured on the board.
-    
+    @@WIN_COMBOS.each { |combo|
+      #print " 1st #{@board[combo[0]].letter} 2nd #{@board[combo[1]].letter} 3rd #{@board[combo[2]].letter} \n"
+      if((@board[combo[0]].letter == @board[combo[1]].letter)  && (@board[combo[1]].letter == @board[combo[2]].letter))
+        return true
+      end
+    }
+    return false
   end
 
   def full_board?
@@ -55,5 +61,9 @@ test_game = TicTacToe.new()
 test_game.display_board
 
 test_game.player_move("X", 3)
+test_game.player_move("X", 4)
+test_game.player_move("X", 5)
 
 test_game.display_board
+
+puts test_game.win?
