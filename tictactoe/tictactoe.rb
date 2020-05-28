@@ -25,7 +25,12 @@ class TicTacToe
 
   def player_move(player_letter, space)
     #this method to be called when a player makes a move
-    @board[space].letter = player_letter
+    unless(@board[space].is_full)
+      @board[space].letter = player_letter
+      @board[space].is_full = true
+    else
+      puts "invalid space already has a letter"
+    end
   end
 
   def win? 
@@ -41,17 +46,25 @@ class TicTacToe
 
   def full_board?
     #this method to determine if all spaces have been played, aka a draw... assuming someone didnt win on the last play.
+    full_board = true
+    @board.each { |cell|
+      if cell.letter == ' ' 
+        full_board = false
+      end
+    }
+    return full_board
   end
 
 end
 
 class Cell 
-  attr_accessor :letter
+  attr_accessor :letter, :is_full
   #once the id is created it should stay the same
   attr_reader :id 
   def initialize(id)
     @id = id
     @letter = ' '
+    @is_full = false
   end
 
 end
@@ -63,7 +76,15 @@ test_game.display_board
 test_game.player_move("X", 3)
 test_game.player_move("X", 4)
 test_game.player_move("X", 5)
+test_game.player_move("X", 6)
+test_game.player_move("X", 7)
+test_game.player_move("X", 8)
+test_game.player_move("X", 0)
+test_game.player_move("X", 1)
+test_game.player_move("X", 2)
 
 test_game.display_board
 
 puts test_game.win?
+
+puts test_game.full_board?
