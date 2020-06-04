@@ -9,15 +9,26 @@ class Mastermind
 
   def new_guess
     #this will take input from code-breaker and test to see if its right, or right places/numbers
-    puts "Codebreaker, please enter your guess code, I will tell you two things: the count of digits in the correct place,
-     and the count of correct digits in incorrect places"
+    puts "Codebreaker, please enter your guess code, I will tell you two things: the count of digits in the correct place, and the count of correct digits in incorrect places"
     guess = gets.chomp.to_i
-    puts guess
   end
 
   def correct_number_and_place(guess)
     #count how many correct number and place compared to secret code
-    puts "correct num and place"
+    digits = guess.to_s.split
+    secret_digits = @secret_code.to_s.split
+    puts secret_digits
+    puts "super #{@secret_code} secret codeeee"
+    count = 0
+    iteration = 0
+    digits.each { |digit| 
+      puts "single digit #{digit} and secret #{secret_digits[iteration]}"
+      if digit == secret_digits[iteration]
+        count += 1
+      end
+      iteration += 1
+    }
+    return count
   end
 
   def correct_number_only(guess)
@@ -49,8 +60,8 @@ class Mastermind
         puts "#{digit} not between 1,6 "
       end
     }
-    return secret_code
     end
+    return secret_code
   end
 
   def set_guesses
