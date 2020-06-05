@@ -1,5 +1,6 @@
 class Mastermind
-  attr_reader :secret_code, :total_guesses, :used_guesses
+  attr_reader :secret_code, :total_guesses
+  attr_accessor :correct_guess , :used_guesses
   def initialize
     @secret_code = set_secret_code
     @total_guesses = set_guesses
@@ -10,6 +11,7 @@ class Mastermind
   def new_guess
     #this will take input from code-breaker and test to see if its right, or right places/numbers
     puts "Codebreaker, please enter your guess code, I will tell you two things: the count of digits in the correct place, and the count of correct digits in incorrect places"
+    @used_guesses += 1
     guess = gets.chomp.to_i
   end
 
@@ -22,16 +24,20 @@ class Mastermind
     count = 0
     iteration = 0
     for i in 0..3
-      puts "digits: #{digits[i]} secret: #{secret_digits[i]}"
+      #puts "digits: #{digits[i]} secret: #{secret_digits[i]}"
       if digits[i] == secret_digits[i]
         count += 1
       end
     end
+    if count == 4
+      @correct_guess = true
+    end
     return count
   end
 
-  def correct_number_only(guess)
+  def correct_number_only(guess, correct_position)
     #count how many correct numbers but incorrect place.
+    digits = guess.to_s.chars
     puts "correct_number_only"
   end
 
@@ -39,11 +45,15 @@ class Mastermind
     until(@used_guesses >= @total_guesses || @correct_guess)
       guess = new_guess
       num_and_place = correct_number_and_place(guess)
-      just_num = correct_number_only(guess)
+      if num_and_place == 4 
+        puts "Codebreaker: You've succesfully broken the code! you win!"
+        break
+      end
+      just_num = correct_number_only(guess, num_and_place)
       puts "Codebreaker: your guess of #{guess} has #{num_and_place} digits in the correct place and #{just_num} 
-      correct digits in the wrong place"
+      correct digits in the wrong place you have #{@total_guesses - @used_guesses} left"
     end
-    if(correct_guess)
+    if(@correct_guess)
       "Congrats Codebreaker you win, the secret code was #{guess}!"
     else 
       "Sorry Codebreaker, Codemaker beat you this time"
