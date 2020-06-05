@@ -15,19 +15,18 @@ class Mastermind
 
   def correct_number_and_place(guess)
     #count how many correct number and place compared to secret code
-    digits = guess.to_s.split
-    secret_digits = @secret_code.to_s.split
-    puts secret_digits
-    puts "super #{@secret_code} secret codeeee"
+    digits = guess.to_s.chars
+    secret_digits = @secret_code.to_s.chars
+    # puts secret_digits
+    # puts "super #{@secret_code} secret codeeee"
     count = 0
     iteration = 0
-    digits.each { |digit| 
-      puts "single digit #{digit} and secret #{secret_digits[iteration]}"
-      if digit == secret_digits[iteration]
+    for i in 0..3
+      puts "digits: #{digits[i]} secret: #{secret_digits[i]}"
+      if digits[i] == secret_digits[i]
         count += 1
       end
-      iteration += 1
-    }
+    end
     return count
   end
 
