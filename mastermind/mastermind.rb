@@ -13,18 +13,25 @@ class Mastermind
     puts "Codebreaker, please enter your guess code, I will tell you two things: the count of digits in the correct place, and the count of correct digits in incorrect places"
     @used_guesses += 1
     guess = gets.chomp.to_i
+    unless guess.to_s.chars.map(&:to_i).each { |digit|
+      unless digit.between?(1,6)
+        puts "#{digit} not between 1,6 I'm still counting this against your guesses!"
+      end
+    }
+    end
+    if(guess.to_s.length != 4)
+      puts "your guess should have 4 digits this one counts, no freebies!"
+      guess = new_guess
+    end
+    return guess
   end
 
   def correct_number_and_place(guess)
     #count how many correct number and place compared to secret code
     digits = guess.to_s.chars
     secret_digits = @secret_code.to_s.chars
-    # puts secret_digits
-    # puts "super #{@secret_code} secret codeeee"
     count = 0
-    iteration = 0
     for i in 0..3
-      #puts "digits: #{digits[i]} secret: #{secret_digits[i]}"
       if digits[i] == secret_digits[i]
         count += 1
       end
@@ -37,8 +44,26 @@ class Mastermind
 
   def correct_number_only(guess, correct_position)
     #count how many correct numbers but incorrect place.
-    digits = guess.to_s.chars
-    puts "correct_number_only"
+    digits = guess.to_s.chars.map(&:to_i)
+    guess_hash = Hash.new(0)
+    digits.each { |digit| guess_hash[digit] += 1 }
+    secret_digits = @secret_code.to_s.chars.map(&:to_i)
+    secret_hash = Hash.new(0)
+    secret_digits.each { |secret_digit| secret_hash[secret_digit] += 1}
+    count = 0
+    for i in 1..6
+      if secret_hash[i] > 0 && guess_hash[i] > 0 
+        #this means they both have at least 1 digit.
+        if secret_hash[i] > guess_hash[i]
+          count += guess_hash[i]
+        else
+          count += secret_hash[i]
+        end
+      end
+    end
+    #subtract those in the correct position to determine digits that are correct but ordered wrong.
+    return count - correct_position
+
   end
 
   def play_game
