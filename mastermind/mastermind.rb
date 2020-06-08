@@ -89,11 +89,20 @@ class Mastermind
     #takes input from codemaker player, and uses that to test codebreakers skills
     puts "Codemaker please enter a 4-digit number to be used as your secret code. make sure that the digits are between 1, 6"
     secret_code = gets.chomp
+    bad_code = false
     unless secret_code.to_s.chars.map(&:to_i).each { |digit|
       unless digit.between?(1,6)
-        puts "#{digit} not between 1,6 "
+        puts "#{digit} not between 1,6 try again "
+        bad_code = true
       end
     }
+    end
+    if(secret_code.length != 4)
+      puts "the code wasn't exactly 4 chars long, try again"
+      bad_code = true
+    end
+    if bad_code 
+      secret_code = set_secret_code
     end
     return secret_code
   end
