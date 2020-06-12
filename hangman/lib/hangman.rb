@@ -1,3 +1,5 @@
+require 'yaml'
+
 class Hangman
   attr_reader :secret_word
   attr_accessor :remaining_lives, :guessed_letters
@@ -52,8 +54,11 @@ class Hangman
 
   def new_guess
     #takes user input for a new guess, display the board, if a win, end game
-    puts "\nGuesser: please choose a letter"
+    puts "\nGuesser: please choose a letter, or at any time type save to save your game"
     guess = gets.chomp.to_s.downcase
+    if(guess == 'save')
+      save_game
+    end
     while(guess.length != 1 || !('a'..'z').include?(guess))
       puts "Guesser: please only choose a single letter"
       guess = gets.chomp.to_s.downcase
@@ -91,7 +96,19 @@ class Hangman
   end
 
   def save_game
-    #serialize the state of the game, and save that data into file
+    #serialize data, save it to a file that the user specifies.
+    puts "please type the name of the file you'd like to save your game in:"
+    save_file = gets.chomp.to_s
+    yaml_string = YAML.dump ({
+      :secret_word => @secret_word,
+      :remaining_lives => @remaining_lives,
+      :guessed_letters => @guessed_letters,
+      :word_state => @word_state,
+      :win => @win,
+    })
+    File.open(save_file, 'w') do |file|
+      file.print(yaml_string)
+    end
   end
 
   def load_game
@@ -99,11 +116,17 @@ class Hangman
     #deserialize data from file.
     puts "Please type the name of your save file"
     save_file = gets.chomp.to_s
+
+    begin
+      YAML.load File.read(save_file)
+    rescue 
+      "some problem loading that file"
+    end
+
   end
 
   def play_game
-    while(@remaining_lives > 0 && @win == false)
-
+    until(@remaining_lives == 0 || @win == true)
       new_guess
       display_letters_and_blanks
       unless(@word_state.include?('_'))
