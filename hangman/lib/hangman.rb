@@ -116,9 +116,19 @@ class Hangman
     #deserialize data from file.
     puts "Please type the name of your save file"
     save_file = gets.chomp.to_s
+    until File.file?(save_file)
+      puts "looks like that file doesnt exist, please try again."
+      save_file = gets.chomp.to_s
+    end
 
     begin
-      YAML.load File.read(save_file)
+      data = YAML.load File.read(save_file)
+      @secret_word = data[:secret_word]
+      @remaining_lives = data[:remaining_lives]
+      @guessed_letters = data[:guessed_letters]
+      @word_state = data[:word_state]
+      @win = data[:word_state]
+      display_letters_and_blanks
     rescue 
       "some problem loading that file"
     end
