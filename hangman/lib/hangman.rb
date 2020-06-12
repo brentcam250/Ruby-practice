@@ -47,7 +47,7 @@ class Hangman
     until ((5..12).include?(word.length))
       #until the random word is between our length requirements.
       word = find_random_word
-      puts "word: #{word} length: #{word.length}"
+      #puts "word: #{word} length: #{word.length}"
     end
     return word.downcase
   end
