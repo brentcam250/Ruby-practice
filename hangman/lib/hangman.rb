@@ -19,7 +19,8 @@ class Hangman
       @remaining_lives = 6
       @guessed_letters = []
       @word_state = []
-      @word_state.fill('_', 0, secret_word.length)
+      @word_state.fill('_', 0, secret_word.length-1)
+      @win = false
     else
       load_game
     end
@@ -46,7 +47,7 @@ class Hangman
       word = find_random_word
       puts "word: #{word} length: #{word.length}"
     end
-    return word
+    return word.downcase
   end
 
   def new_guess
@@ -63,7 +64,8 @@ class Hangman
     else
       # @remaining_lives -= 1 unless(@secret_word.include?(guess))
       if(@secret_word.include?(guess))
-
+        puts "good guess"
+        update_word_state(guess)
       else
         @remaining_lives -= 1
       end
@@ -72,11 +74,19 @@ class Hangman
 
   end
 
+  def update_word_state(guess)
+    #this method updates the game state, and shows the guesser where their correct letters are.
+    indexes = (0..@secret_word.length).find_all { |i| @secret_word[i,1] == guess}
+    indexes.each do |index| 
+      @word_state[index] = guess
+    end
+  end
+
   def display_letters_and_blanks
     #this method is called after new guess is made, it will show the word as blanks with the correct guessed letters filled in
-    puts "Letters guessed: #{@guessed_letters}"
-    puts "Remaining lives: #{@remaining_lives}"
-    puts "State of your guessing: #{@word_state}"
+    puts "Letters guessed: #{@guessed_letters} \n"
+    puts "Remaining lives: #{@remaining_lives} \n"
+    puts "State of your guessing: #{@word_state} \n"
 
   end
 
@@ -92,9 +102,14 @@ class Hangman
   end
 
   def play_game
-    while(@remaining_lives > 0)
+    while(@remaining_lives > 0 && @win == false)
+
       new_guess
       display_letters_and_blanks
+      unless(@word_state.include?('_'))
+        @win = true
+        puts "winner winner"
+      end
     end
   end
 end
