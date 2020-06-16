@@ -1,28 +1,23 @@
+#written by Brent Cameron June 2020 
 def merge_sort (array)
     if !array
         puts "no array"
     end
     if array.length > 2
+        #if its longer than 2 cut it in half and recursion
         a = merge_sort(array.slice(0, (array.length/2)))
         b = merge_sort(array.slice(array.length/2, array.length-1))
         return merge(a,b) unless(a.nil? || b.nil?)
-        # if(a && b)
-        #     return merge(a,b)
-        # else 
-        #     puts "trying to pass nil arrays... "
-        #     return 0
-        # end
     elsif array.length == 2 
+        #if its two sort the two elements
         if array[0] > array[1]
             reverse = [array[1], array[0]]
-            
             return reverse
         else 
-           
             return array
         end
     elsif array.length == 1
-        
+        # array of length one is trivially sorted
         return array
         
     else 
