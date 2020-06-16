@@ -1,5 +1,4 @@
 def merge_sort (array)
-    puts "in the beginning there was #{array}"
     if !array
         puts "no array"
     end
@@ -27,7 +26,7 @@ def merge_sort (array)
         return array
         
     else 
-        puts "returning array of length #{array.length}"
+        puts "returning array of length #{array.length} this shouldnt happen"
     end
 
 end
@@ -37,28 +36,12 @@ def merge (arr1, arr2)
     total_length = arr1.length + arr2.length
     output_array = []
     until(arr1[0].nil? || arr2[0].nil?)
-        # puts "arr1[0] #{arr1[0]} and arr2[0] #{arr2[0]}"
+       #if theres values in both, then we need to compare which is smaller and put that in the output array 
         arr1[0] > arr2[0] ? output_array << arr2.shift : output_array << arr1.shift
-        # puts "output is #{output_array}"
-        # if(arr1.nil?)
-        #     output_array << arr2.shift
-        # elsif (arr2.nil?)
-        #     output_array <<arr1.shift
-        # elsif (arr1[0] > arr2[0])
-        #     output_array << arr2.shift
-        # else
-        #     output_array << arr1.shift
-        # end
-
-        # if(arr1[0] > arr2[0])
-        #     output_array << arr2.shift
-        # else 
-        #     output_array << arr1.shift
-        # end
     end
+    # these next loops come when theres only values left in one, shovel all the values onto the output array
     until arr1.length == 0
         output_array << arr1.shift
-        # puts "arr1.shift #{arr1.shift}"
     end
     until arr2.length == 0 
         output_array << arr2.shift
@@ -66,13 +49,14 @@ def merge (arr1, arr2)
     return output_array
 end
 
-test_array = [10, 5, 3 , 6, 34, 1, 7, 5, 5 , 5 ,100, 20 ,-10, 0]
-test_array_length_1 = [3,7 ,8 ]
+test_array = [0,10, 5, 3 , 6, 34, 1, 7, 5, 5 , 5 ,100, 20 ,-10, 0,9997865567657857578578558]
+test_array_length_1 = [ 1,5,6,7,8,90,121121]
 test_array_length_3 = [1,1,4, 6, 9]
 
 
 # print merge(test_array_length_1, test_array_length_3)
 
 
-print  merge_sort(test_array)
+print  merge_sort(test_array) 
+puts ""
 # merge_sort(test_array)
