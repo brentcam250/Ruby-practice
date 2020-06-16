@@ -16,14 +16,14 @@ def merge_sort (array)
     elsif array.length == 2 
         if array[0] > array[1]
             reverse = [array[1], array[0]]
-            puts "returning #{reverse} reverse order from the length 2 branch"
+            
             return reverse
         else 
-            puts "returning #{array} from length 2 branch"
+           
             return array
         end
     elsif array.length == 1
-        puts "returning #{array} from the length 1 branch"
+        
         return array
         
     else 
@@ -33,21 +33,46 @@ def merge_sort (array)
 end
 
 def merge (arr1, arr2)
+    #takes two lists which we assume are sorted, and makes them into one sorted list
     total_length = arr1.length + arr2.length
     output_array = []
-    while(arr1[0] && arr2[0])
-        if(arr1[0] > arr2[0])
-            output_array << arr2.shift
-        else 
-            output_array << arr1.shift
-        end
+    until(arr1[0].nil? || arr2[0].nil?)
+        # puts "arr1[0] #{arr1[0]} and arr2[0] #{arr2[0]}"
+        arr1[0] > arr2[0] ? output_array << arr2.shift : output_array << arr1.shift
+        # puts "output is #{output_array}"
+        # if(arr1.nil?)
+        #     output_array << arr2.shift
+        # elsif (arr2.nil?)
+        #     output_array <<arr1.shift
+        # elsif (arr1[0] > arr2[0])
+        #     output_array << arr2.shift
+        # else
+        #     output_array << arr1.shift
+        # end
+
+        # if(arr1[0] > arr2[0])
+        #     output_array << arr2.shift
+        # else 
+        #     output_array << arr1.shift
+        # end
+    end
+    until arr1.length == 0
+        output_array << arr1.shift
+        # puts "arr1.shift #{arr1.shift}"
+    end
+    until arr2.length == 0 
+        output_array << arr2.shift
     end
     return output_array
 end
 
-test_array = [10, 5, 3 , 6, 34, 1, 7 ]
-test_array_length_1 = [1]
+test_array = [10, 5, 3 , 6, 34, 1, 7, 5, 5 , 5 ,100, 20 ,-10, 0]
+test_array_length_1 = [3,7 ,8 ]
+test_array_length_3 = [1,1,4, 6, 9]
 
-test_array_length_2 = [2,1]
-puts merge_sort(test_array)
+
+# print merge(test_array_length_1, test_array_length_3)
+
+
+print  merge_sort(test_array)
 # merge_sort(test_array)
