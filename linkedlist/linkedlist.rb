@@ -136,51 +136,23 @@ class LinkedListNode
     @pointer = nil
   end
 
-  # def value 
-  #   return @data
-  # end
-
-  def next_node
-    return @pointer
-  end
 end
 
 
-# node = LinkedListNode.new(1)
-# puts node.data
-# print node.next_node unless node.next_node == nil
-
 testList = LinkedList.new('hi')
-# puts testList.head.data
+puts testList.head.data
 
-# puts testList.size
+puts testList.size
 
 
-# testList.append('howareya')
-# testList.append('bye')
+testList.append('howareya')
+testList.append('bye')
 
-# testList.prepend('hullo')
+testList.prepend('hullo')
 
-# puts testList.tail.value
-
-# puts testList
-
-# puts testList.find('bye')
-
-# puts testList.size
-
-# if testList.find('5') == nil
-#   puts "nil"
-# end
-
-# puts testList.at(1).data[0]
-
-# puts testList.at(2).data[0]
-
-# puts testList.at(8)
-
-# puts testList.size
 
 puts testList.pop.data
 
 puts testList
+
+puts testList.pop.data
