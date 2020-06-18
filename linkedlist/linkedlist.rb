@@ -11,6 +11,9 @@ class LinkedList
 
   def append(value)
     #add value to the end of the list
+    if @head.nil?
+      prepend(value)
+    end
     @size += 1
     new_node = LinkedListNode.new(value)
     @tail.pointer = new_node 
