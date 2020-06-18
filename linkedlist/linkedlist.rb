@@ -16,7 +16,11 @@ class LinkedList
   end
 
   def prepend(value)
-
+    #put a new node at the beginning of the list
+    @size += 1
+    new_node = LinkedListNode.new(value)
+    new_node.pointer = @head
+    @head = new_node
   end
 
   def size
@@ -41,21 +45,47 @@ class LinkedList
 
   def contains?(value)
     #search the list for value, return either true or false.
+    current = @head
+    output = false
+    until (current.data[0] == value || current.pointer == nil)
+      if current.data[0] == value 
+        output = true
+      end
+      current = current.pointer 
+    end
+    if current.data[0] == value
+      #need this to check the last nodes data. 
+      output = true
+    end
+    return output
   end
 
   def find(value)
     #returns the index of value or nil if not found
+    current = @head
+    index = 0
+    until (current.data[0] == value || current.pointer == nil)
+      if(current.data[0] == value)
+        return index
+      end
+      index += 1 
+      current = current.pointer
+    end
+    if current.data[0] == value
+      return index
+    end
+    return nil
 
   end
 
   def to_s
     #format: ( value ) -> ( value ) -> ( value ) -> nil
     current = @head
-    puts "before stuff #{@head.data[0]} "
-    puts "before stuff pointer #{@head.pointer.data} "
+
 
     output_string = ''
     while(current.pointer)
+      #without the array notation, theres a nil value that i dont know where it comes from.
       output_string += " ( #{current.data[0]} ) -> "
       current = current.pointer
 
@@ -96,7 +126,14 @@ puts testList.head.data
 testList.append('howareya')
 testList.append('bye')
 
+testList.prepend('hullo')
 
 # puts testList.tail.value
 
 puts testList.to_s
+
+puts testList.find('bye')
+
+if testList.find('5') == nil
+  puts "nil"
+end
