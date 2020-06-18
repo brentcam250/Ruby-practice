@@ -47,6 +47,28 @@ class LinkedList
 
   def pop
     #remove and return the tail.
+    current = @head
+    previous = current
+    if current.pointer == nil
+      #then the head is also the tail. 
+      to_return = @head
+      @head = nil
+      @tail = nil 
+      @size -= 1
+      return to_return
+    else
+      #move once to get current ahead of previous
+      current = current.pointer
+    end
+    until(current.pointer == nil)
+      current = current.pointer
+      previous = previous.pointer
+    end 
+
+    previous.pointer = nil 
+    #remove the second last ones pointer so that it will now be the tail
+    @size -= 1 
+    return current
   end
 
   def contains?(value)
@@ -87,7 +109,9 @@ class LinkedList
   def to_s
     #format: ( value ) -> ( value ) -> ( value ) -> nil
     current = @head
-
+    if(current == nil)
+      return "empty list"
+    end
 
     output_string = ''
     while(current.pointer)
@@ -132,10 +156,10 @@ testList = LinkedList.new('hi')
 # puts testList.size
 
 
-testList.append('howareya')
-testList.append('bye')
+# testList.append('howareya')
+# testList.append('bye')
 
-testList.prepend('hullo')
+# testList.prepend('hullo')
 
 # puts testList.tail.value
 
@@ -149,12 +173,14 @@ testList.prepend('hullo')
 #   puts "nil"
 # end
 
-puts testList.at(1).data[0]
+# puts testList.at(1).data[0]
 
-puts testList.at(2).data[0]
+# puts testList.at(2).data[0]
 
-puts testList.at(8)
+# puts testList.at(8)
 
-puts testList.size
+# puts testList.size
 
-puts testList.at(4)
+puts testList.pop.data
+
+puts testList
