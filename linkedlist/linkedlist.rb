@@ -1,3 +1,5 @@
+#written by Brent Cameron June 2020
+
 class LinkedList
   #class to make a list of LinkedListNode objects
   attr_accessor :head, :tail, :size
@@ -23,20 +25,24 @@ class LinkedList
     @head = new_node
   end
 
-  def size
-    return @size
-  end
-  
-  def head 
-    return @head
-  end
-
-  def tail 
-    return @tail
-  end
-
   def at(index)
-    #returns element at index
+    #returns node at index or false if index is outside of the list
+    if(index > @size - 1)
+      return false
+    end
+    current_index = 0
+    current_node = @head
+    until (current_index == index || current_node.pointer == nil)
+      current_node = current_node.pointer
+      current_index += 1
+    end
+    if(current_index == index)
+      return current_node
+    elsif current_index + 1 == index
+      return current_node.pointer
+    else
+      return false
+    end
   end
 
   def pop
@@ -61,7 +67,7 @@ class LinkedList
   end
 
   def find(value)
-    #returns the index of value or nil if not found
+    #returns the index of first occurence of value or nil if not found
     current = @head
     index = 0
     until (current.data[0] == value || current.pointer == nil)
@@ -121,7 +127,10 @@ end
 # print node.next_node unless node.next_node == nil
 
 testList = LinkedList.new('hi')
-puts testList.head.data
+# puts testList.head.data
+
+# puts testList.size
+
 
 testList.append('howareya')
 testList.append('bye')
@@ -130,10 +139,22 @@ testList.prepend('hullo')
 
 # puts testList.tail.value
 
-puts testList.to_s
+# puts testList
 
-puts testList.find('bye')
+# puts testList.find('bye')
 
-if testList.find('5') == nil
-  puts "nil"
-end
+# puts testList.size
+
+# if testList.find('5') == nil
+#   puts "nil"
+# end
+
+puts testList.at(1).data[0]
+
+puts testList.at(2).data[0]
+
+puts testList.at(8)
+
+puts testList.size
+
+puts testList.at(4)
