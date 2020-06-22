@@ -28,11 +28,6 @@ class BinarySearchTree
 
   end
 
-  # def root 
-  #   @root
-  # end
-
-
   def insert(starting_node, value)
     #recursive insert method
     
@@ -70,8 +65,56 @@ class BinarySearchTree
   end
 
   def delete(value)
-
+    target_node = find_with_parent(value)
+    if target_node
+      to_be_deleted = target_node[1]
+      parent_of_to_be_deleted = target_node[0]
+      if(to_be_deleted.left_child.nil? && to_be_deleted.right_child.nil?)
+        #no children so we can delete this worthless node
+        if(parent_of_to_be_deleted.left_child.data == value)
+          #we have to make sure that we delete the appropriate child node if there are more than one
+          parent_of_to_be_deleted.left_child = nil
+        else
+          parent_of_to_be_deleted.right_child = nil 
+        end
+      else
+        puts "shuffle children about"
+      end
+    else
+      puts " that node doesnt exist bozo"
+      return false
+    end
   end
+
+  def find_with_parent(starting_node = @root, parent_node = nil, value)
+      #find value, return array of nodes 
+      #first value is the parent, second is the node with the target value
+      #with the value, or false if not found
+      #use recursion to search through sub trees
+      
+      if(value == starting_node.data)
+  
+        return [parent_node, starting_node]
+  
+      elsif(value < starting_node.data)
+  
+        unless(starting_node.left_child.nil?)
+          find_with_parent(starting_node.left_child, starting_node, value)
+        else
+          return false
+        end
+  
+      else
+  
+        unless(starting_node.right_child.nil?)
+          find_with_parent(starting_node.right_child, starting_node, value)
+        else
+          return false
+        end
+  
+      end
+  end
+  
 
   def find(starting_node = @root, value)
     #find value, return node with the value, or false if not found
@@ -96,7 +139,7 @@ class BinarySearchTree
       else
         return false
       end
-      
+
     end
 
   end
@@ -147,11 +190,19 @@ end
 
 test_array = [1,3,4,2]
 
-test_tree = BinarySearchTree.new(test_array)
+array =  [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
-puts test_tree.root
+test_tree = BinarySearchTree.new(array)
 
-puts "find #{test_tree.find(8)}"
+# puts test_tree.root
+
+puts test_tree.find_with_parent(6345)
+
+test_tree.delete(324)
+
+puts test_tree.find(324)
+# puts "find #{test_tree.find(8)}"
+# puts "find #{test_tree.find(6345)}"
 
 
 # test_node = BSTNode.new(5)
