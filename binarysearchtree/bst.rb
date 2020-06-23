@@ -72,7 +72,14 @@ class BinarySearchTree
       to_be_deleted = target_node[1]
       parent_of_to_be_deleted = target_node[0]
 
-      if(parent_of_to_be_deleted.left_child.data == value)
+      puts "parent: #{parent_of_to_be_deleted} \n\n"
+      puts "to_be_deleted: #{to_be_deleted}"
+      if(parent_of_to_be_deleted.left_child.nil?)
+        #target_on_right remains true
+      elsif(parent_of_to_be_deleted.right_child.nil?)
+        target_on_right = false
+
+      elsif(parent_of_to_be_deleted.left_child.data == value)
         #tobedeleted is on the left
         target_on_right = false
       end
@@ -80,6 +87,7 @@ class BinarySearchTree
       #section for dealing with cases of if the node we want to delete has children or not.
       if(to_be_deleted.is_leaf?)
         #no children, can just delete this straight off
+        puts "its a leaf!"
         if(target_on_right)
           parent_of_to_be_deleted.right_child = nil
           return true
@@ -97,6 +105,7 @@ class BinarySearchTree
         return true
       else
         #to_be_deleted has two children
+        puts "shit it has two childs"
 
       end
 
@@ -106,52 +115,8 @@ class BinarySearchTree
     end
   end
 
-  # def delete(value)
-  #   target_node = find_with_parent(value)
-  #   target_on_right = true
 
-  #   if target_node
-  #     to_be_deleted = target_node[1]
-  #     parent_of_to_be_deleted = target_node[0]
-  #     puts "parent = #{parent_of_to_be_deleted}"
-  #     if(parent_of_to_be_deleted.left_child.data == value)
-  #       #to be deleted is onthe left
-  #       target_on_right = false
-  #     end
-  #     if(to_be_deleted.left_child.nil? && to_be_deleted.right_child.nil?)
-  #       #no children so we can delete this worthless node
-  #       if(target_on_right)
-  #         #we have to make sure that we delete the appropriate child node if there are more than one
-  #         parent_of_to_be_deleted.right_child = nil
-  #       else
-  #         parent_of_to_be_deleted.left_child = nil 
-  #       end
-  #     elsif (to_be_deleted.left_child.nil? || to_be_deleted.right_child.nil? )
-  #       #only one child, can just move the child to take the place of the deleted node
-  #       if(to_be_deleted.left_child.nil?)
-  #         #the child is on the right
-  #         if(target_on_right)
-  #           parent_of_to_be_deleted.right_child = to_be_deleted.right_child
-  #         else
-  #           parent_of_to_be_deleted.left_child = to_be_deleted.right_child
-  #         end
-  #       else
-  #         #child is on the left
-  #         if(target_on_right)
-  #           parent_of_to_be_deleted.right_child = to_be_deleted.left_child
-  #         else
-  #           parent_of_to_be_deleted.left_child = to_be_deleted.left_child
-  #         end
-          
-  #       end
-  #       puts "shuffle children about"
-  #       puts parent_of_to_be_deleted
-  #     end
-  #   else
-  #     puts " that node doesnt exist bozo"
-  #     return false
-  #   end
-  # end
+  
 
   def find_with_parent(starting_node = @root, parent_node = nil, value)
       #find value, return array of nodes 
@@ -211,8 +176,21 @@ class BinarySearchTree
 
   end
 
-  def level_order(block)
+  #block is a starting node, reads until the bottom
+  def level_order(block = @root)
     #can be either iterative or recursive
+    queue = []
+    queue.push(block)
+    while(queue.length > 0)
+      current_node = queue.shift
+      puts "printing out kids #{current_node.data}"
+      children = current_node.return_children
+      if(children)
+        children.each do |child|
+          queue.push(child)
+        end
+      end
+    end
   end
 
   def in_order(block)
@@ -269,12 +247,25 @@ class BSTNode
     elsif (!left_child.nil? && right_child.nil?)
       #only a left child
       return -1
-    elsif(this.is_leaf?)
+    elsif(is_leaf?)
       return false
     else
       return 0
     end
 
+  end
+
+  def return_children
+    #returns the actual nodes of the children, or false if there are none
+    if(find_children == false)
+      return false
+    elsif(find_children == 1)
+      return [right_child]
+    elsif(find_children == -1)
+      return [left_child]
+    else
+      return [left_child, right_child]
+    end
   end
 
 end
@@ -283,14 +274,18 @@ test_array = [1,3,4,2]
 
 array =  [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
-test_tree = BinarySearchTree.new(test_array)
+test_tree = BinarySearchTree.new(array)
 
 # puts test_tree.root
 
 
-test_tree.delete(3)
+# puts test_tree.delete(8)
 
-puts test_tree.find(3)
+# puts test_tree.find_with_parent(9)
+
+puts test_tree.level_order
+
+# puts test_tree.find(3)
 # puts "find #{test_tree.find(8)}"
 # puts "find #{test_tree.find(6345)}"
 
