@@ -224,11 +224,21 @@ class BinarySearchTree
       post_order(block.right_child) unless block.right_child.nil?
       puts block.data
     end
-    
+
   end
 
-  def depth(node)
-
+  def depth(node = @root)
+    #recursively calculate the max of the left/right subtrees to find the tallest one 
+    max_depth = 0
+    unless node 
+      return 0
+    else 
+      left = depth(node.left_child)
+      right = depth(node.right_child)
+      left > right ? max_depth = left + 1 : max_depth = right + 1 
+    end
+    return max_depth
+    
   end
 
   def balanced?
@@ -309,7 +319,7 @@ test_tree = BinarySearchTree.new(array)
 
 # puts "pre #{test_tree.pre_order} "
 
-puts test_tree.post_order
+puts test_tree.depth
 
 # puts test_tree.find(3)
 # puts "find #{test_tree.find(8)}"
