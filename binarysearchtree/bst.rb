@@ -4,8 +4,9 @@ class BinarySearchTree
   attr_accessor :root, :has_root
 
   def initialize(array)
-    @root = build_tree(array) 
-    @has_root = false
+    array = array.sort
+    array = array.uniq
+    @root = build_balanced_tree(array) 
   end
 
   def build_tree(array)
@@ -28,15 +29,41 @@ class BinarySearchTree
 
   end
 
-  def insert(starting_node, value)
-    #recursive insert method
-    
-    unless(@has_root)
-      @has_root = true
-      new_node = BSTNode.new(value)
-      @root = new_node
-      return new_node
+  def build_balanced_tree(array)
+    #takes in sorted array, recursively builds a balanced BST 
+    unless(array.length >= 1)
+      return nil
     end
+    # puts "length = #{array.length}"
+    mid = (array.length/2) -1 
+    # puts "mid = #{mid}"
+    root = BSTNode.new(array[mid])
+    left_array = array.slice(0..mid)
+    right_array = array.slice(mid+1..-1)
+    # puts "array mid = #{array[mid]}"
+    # puts "array = #{array}"
+    # puts "left sub array = #{left_array}"
+    # puts "right sub array = #{right_array}"
+    root.left_child = build_balanced_tree(left_array) unless left_array.length <= 1
+    root.right_child = build_balanced_tree(right_array) unless right_array.length <= 1
+    # root.left_child = build_balanced_tree(array.slice(0..mid))
+    # root.right_child = build_balanced_tree(array.slice(mid+1..-1))
+    @root = root
+
+    return root
+
+  end
+
+  def insert(starting_node = @root, value)
+    #recursive insert method
+
+    # unless(@has_root)
+    #   puts "i shouldnt be here"
+    #   @has_root = true
+    #   new_node = BSTNode.new(value)
+    #   @root = new_node
+    #   return new_node
+    # end
 
     if(value < starting_node.data)
       if(starting_node.left_child)
@@ -238,14 +265,36 @@ class BinarySearchTree
       left > right ? max_depth = left + 1 : max_depth = right + 1 
     end
     return max_depth
-    
+
   end
 
-  def balanced?
+  def balanced?(node = @root)
+
+    unless node 
+      return true
+    end
+
+    left_depth = depth(node.left_child)
+    right_depth = depth(node.right_child)
+    if(((left_depth - right_depth).abs <=1) && balanced?(node.left_child) && balanced?(node.right_child))
+      return true
+    end
+
+    return false
+
 
   end
 
   def rebalance! 
+    if(balanced?)
+      puts " it was already balanced"
+      return false
+    else
+      level_order_array = level_order.sort
+      puts  "level order = #{level_order_array} "
+      new_root = build_balanced_tree(level_order_array)
+      return new_root
+    end
 
   end
 
@@ -306,7 +355,9 @@ test_array = [1,3,4,2]
 
 array =  [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
-test_tree = BinarySearchTree.new(array)
+rand = Array.new(15) {rand(1..100)}
+
+test_tree = BinarySearchTree.new(rand)
 
 # puts test_tree.root
 
@@ -319,7 +370,49 @@ test_tree = BinarySearchTree.new(array)
 
 # puts "pre #{test_tree.pre_order} "
 
-puts test_tree.depth
+# puts test_tree.balanced?
+
+# puts test_tree.level_order
+
+#puts test_tree.rebalance!
+
+# test_tree.insert(100)
+# puts test_tree.in_order
+
+
+puts "balanced?"
+
+puts test_tree.balanced?
+
+puts "traversals"
+
+puts test_tree.level_order
+puts test_tree.pre_order
+puts test_tree.post_order
+puts test_tree.in_order
+
+test_tree.insert(100)
+test_tree.insert(101)
+test_tree.insert(102)
+test_tree.insert(103)
+test_tree.insert(104)
+test_tree.insert(105)
+
+puts "inserted a bunch, is it balanced?"
+puts test_tree.balanced?
+
+puts test_tree.rebalance!
+puts "rebalanced did it work??"
+puts test_tree.balanced?
+
+
+puts "traversals"
+
+puts test_tree.level_order
+puts test_tree.pre_order
+puts test_tree.post_order
+puts test_tree.in_order
+
 
 # puts test_tree.find(3)
 # puts "find #{test_tree.find(8)}"
