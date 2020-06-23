@@ -179,11 +179,13 @@ class BinarySearchTree
   #block is a starting node, reads until the bottom
   def level_order(block = @root)
     #can be either iterative or recursive
+    output = []
     queue = []
     queue.push(block)
     while(queue.length > 0)
       current_node = queue.shift
-      puts "printing out kids #{current_node.data}"
+      # puts "printing out kids #{current_node.data}"
+      output.push(current_node.data)
       children = current_node.return_children
       if(children)
         children.each do |child|
@@ -191,18 +193,38 @@ class BinarySearchTree
         end
       end
     end
+    return output
   end
 
-  def in_order(block)
+  def in_order(block = @root)
+
+    if(block)
+      in_order(block.left_child) unless block.left_child.nil?
+      puts block.data
+      in_order(block.right_child) unless block.right_child.nil?
+    end
+
+    
+  end
+
+  def pre_order(block = @root)
+
+    if(block)
+      puts block.data
+      pre_order(block.left_child) unless block.left_child.nil?
+      pre_order(block.right_child) unless block.right_child.nil?
+    end
 
   end
 
-  def pre_order(block)
+  def post_order(block = @root)
 
-  end
-
-  def post_order(block)
-
+    if(block)
+      post_order(block.left_child) unless block.left_child.nil?
+      post_order(block.right_child) unless block.right_child.nil?
+      puts block.data
+    end
+    
   end
 
   def depth(node)
@@ -283,7 +305,11 @@ test_tree = BinarySearchTree.new(array)
 
 # puts test_tree.find_with_parent(9)
 
-puts test_tree.level_order
+# puts test_tree.in_order
+
+# puts "pre #{test_tree.pre_order} "
+
+puts test_tree.post_order
 
 # puts test_tree.find(3)
 # puts "find #{test_tree.find(8)}"
